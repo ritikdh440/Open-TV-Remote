@@ -1,9 +1,11 @@
 # Open TV Remote
 
-A free, open-source, ad-free remote control app for **Android TV / Google TV** devices, using ADB over Wi-Fi.
+A free, open-source, ad-free remote control app for **Android TV / Google TV** devices over Wi-Fi.
+It supports two modes: the **Wi-Fi remote** protocol (fast, no developer options, pair with a code) and **ADB** (fallback).
 Built for TVs where the usual remote apps fail, including budget brands such as Foxsky, and for phones with no IR blaster.
 
 ## Features
+- **Auto-detects TVs** on your Wi-Fi (one tap to connect)
 - D-pad with OK, Back, Home, Menu
 - Power (smart wake/sleep), Input, Mute
 - Volume and channel controls, media keys (play/pause, rewind, fast-forward)
@@ -13,14 +15,20 @@ Built for TVs where the usual remote apps fail, including budget brands such as 
 - No ads, no tracking, no account
 
 ## How it works
-The app speaks the ADB protocol over your local network (via [dadb](https://github.com/mobile-dev-inc/dadb)) and
-sends commands like `input keyevent`. No cloud, nothing leaves your Wi-Fi.
+**Wi-Fi remote mode** uses the same protocol as Google's official remote app: a TLS connection to the TV
+(ports 6466/6467) paired with a one-time code. **ADB mode** speaks ADB over your network (via
+[dadb](https://github.com/mobile-dev-inc/dadb)). No cloud, nothing leaves your Wi-Fi.
 
 ## Requirements
 - Android TV / Google TV with **network (wireless) debugging** available
 - Android 7.0+ phone (the TV and phone must be on the same Wi-Fi)
 
-## Setup
+## Setup: Wi-Fi remote mode (recommended)
+1. Phone and TV on the same Wi-Fi. Find the TV's IP: Settings > Network.
+2. Open the app, choose **Wi-Fi remote**, enter the IP and tap **Connect**.
+3. The TV shows a 6-character code. Type it in the app and tap **Pair**. This is only needed once.
+
+## Setup: ADB mode
 1. On the TV: Settings > Device Preferences > About, tap **Build** 7 times to enable Developer options.
 2. Settings > Device Preferences > Developer options > turn on **USB debugging** and **Network / Wireless debugging** (wording varies by TV).
 3. Find the TV's IP: Settings > Network.
@@ -47,7 +55,10 @@ ADB gives full control of the TV. Only enable network debugging on a trusted hom
 - [ ] Light theme
 - [ ] Multiple saved TVs and auto-discovery
 - [ ] Touchpad / swipe mode
-- [ ] Android TV Remote Protocol v2 (no developer options needed)
+- [x] Android TV Remote Protocol v2 (no developer options needed)
 
 ## License
 [MIT](LICENSE). Not affiliated with any TV manufacturer. Third-party libraries keep their own licenses (dadb: Apache-2.0).
+
+---
+Made with ♥ by [ritikdh440](https://github.com/ritikdh440). If you find this useful, please give the repo a ⭐ star!
