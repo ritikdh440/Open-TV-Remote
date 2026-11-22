@@ -103,8 +103,8 @@ class TvClient(private val dir: File) {
 
 enum class Mode { ATV, ADB }
 
-// ---- About / signature (edit these two lines) ----
-private const val AUTHOR_NAME = "ritikdh440"
+// ---- About / signature 
+private const val AUTHOR_NAME = "Ritik Dhiman"
 private const val REPO_URL = "https://github.com/ritikdh440/Open-TV-Remote"
 
 // ---------- Network scan (auto-detect TVs) ----------
