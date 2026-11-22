@@ -45,7 +45,7 @@ class TvClient(private val dir: File) {
     }
 
     suspend fun connect(host: String) = withContext(Dispatchers.IO) {
-        try { dadb?.close() } catch (_: Exception) {}
+        try { dadb?.close() } catch (e: Exception) {}
         val d = Dadb.create(host, 5555, keyPair())
         d.shell("echo ok")
         dadb = d
@@ -124,7 +124,7 @@ fun App(client: TvClient) {
         }
     }
 
-    fun run(block: suspend () -> Unit) {
+    fun exec(block: suspend () -> Unit) {
         view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
         scope.launch {
             try { block() } catch (e: Exception) {
@@ -133,7 +133,7 @@ fun App(client: TvClient) {
             }
         }
     }
-    fun key(code: Int) = run { client.shell("input keyevent $code") }
+    fun key(code: Int) = exec { client.shell("input keyevent $code") }
 
     LaunchedEffect(Unit) { if (ip.isNotBlank()) connect() }
 
@@ -181,7 +181,7 @@ fun App(client: TvClient) {
         if (connected) {
             // Power row
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Key("⏻", Modifier.size(60.dp), Danger, CircleShape) { run { client.togglePower() } }
+                Key("⏻", Modifier.size(60.dp), Danger, CircleShape) { exec { client.togglePower() } }
                 Key("Input", Modifier.size(60.dp), KeyBg, CircleShape, 13) { key(178) }
                 Key("Mute", Modifier.size(60.dp), KeyBg, CircleShape, 13) { key(164) }
             }
@@ -225,7 +225,7 @@ fun App(client: TvClient) {
             ) {
                 APPS.forEach { (name, pkg) ->
                     Key(name, Modifier.width(104.dp).height(48.dp), Panel, RoundedCornerShape(14.dp), 14) {
-                        run { client.shell("monkey -p $pkg -c android.intent.category.LEANBACK_LAUNCHER 1") }
+                        exec { client.shell("monkey -p $pkg -c android.intent.category.LEANBACK_LAUNCHER 1") }
                     }
                 }
             }
@@ -245,7 +245,7 @@ fun App(client: TvClient) {
                         val t = text
                         if (t.isNotEmpty()) {
                             val safe = t.replace(" ", "%s").replace("'", "'\\''")
-                            run { client.shell("input text '$safe'") }
+                            exec { client.shell("input text '$safe'") }
                             text = ""
                         }
                     },
