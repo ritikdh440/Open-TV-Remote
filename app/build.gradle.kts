@@ -21,7 +21,16 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions { jvmTarget = "17" }
-    packaging { resources.excludes += "/META-INF/{AL2.0,LGPL2.1}" }
+    packaging {
+        resources.excludes += setOf(
+            "/META-INF/{AL2.0,LGPL2.1}",
+            "META-INF/LICENSE*",
+            "META-INF/NOTICE*",
+            "META-INF/INDEX.LIST",
+            "META-INF/DEPENDENCIES",
+            "META-INF/*.md"
+        )
+    }
 }
 
 dependencies {
@@ -30,5 +39,8 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("dev.mobile:dadb:1.2.9")
+    implementation("dev.mobile:dadb:1.2.9") {
+        exclude(group = "org.junit.jupiter")
+        exclude(group = "org.junit.platform")
+    }
 }
