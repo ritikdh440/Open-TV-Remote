@@ -11,8 +11,8 @@ android {
         applicationId = "com.opentvremote"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.1"
     }
     buildFeatures { compose = true }
     composeOptions { kotlinCompilerExtensionVersion = "1.5.14" }
@@ -28,7 +28,9 @@ android {
             "META-INF/NOTICE*",
             "META-INF/INDEX.LIST",
             "META-INF/DEPENDENCIES",
-            "META-INF/*.md"
+            "META-INF/*.md",
+            "META-INF/versions/**",
+            "/META-INF/versions/**"
         )
     }
 }
@@ -39,6 +41,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.activity:activity-compose:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("org.bouncycastle:bcpkix-jdk18on:1.78.1")
     implementation("dev.mobile:dadb:1.2.9") {
         exclude(group = "org.junit.jupiter")
         exclude(group = "org.junit.platform")
