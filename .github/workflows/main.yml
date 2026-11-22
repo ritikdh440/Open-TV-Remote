@@ -21,7 +21,22 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.7
-      - run: gradle assembleDebug
+      - name: Build
+        run: |
+          set -o pipefail
+          gradle assembleDebug --console=plain 2>&1 | tee build.log
+      - name: Show errors
+        if: failure()
+        run: |
+          grep -E "^e: |error:|What went wrong|Execution failed|Could not|Unresolved|AAPT" -A4 build.log | head -80 > errors.txt || true
+          cat errors.txt
+          { echo '## BUILD ERRORS'; echo '```'; cat errors.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload build log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
       - run: cp app/build/outputs/apk/debug/app-debug.apk OpenTVRemote.apk
       - uses: actions/upload-artifact@v4
         with:
